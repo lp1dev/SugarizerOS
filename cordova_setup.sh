@@ -8,3 +8,4 @@ cordova plugin add cordova-plugin-globalization
 cordova plugin add cordova-plugin-network-information
 cordova plugin add cordova-plugin-device
 cordova plugin add cordova-plugin-media
+cordova plugin add https://github.com/lupin012345/cordova-plugin-launcher.git
