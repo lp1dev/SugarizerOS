@@ -3,11 +3,16 @@
 	init:{
 	    description: "Initializes the SugarizerOS JavaScript API"
 	}
-	get_android_applications:{
+	getAndroidApplications:{
 	    description: "Returns a JSON array containing for each application :
 a package-name (String), an icon (base64 String) and the application's flags (int)",
 	    parameters: "(Optional) a flag to filter the returned applications with",
 	    returns: "A JSON array"
+	}
+	scanWifi:{
+	    description: "Scans the wifi networks around and sends the array of SSIDs to a callback",
+	    parameters: "A callback to be called after the scan is done",
+	    returns: "Nothing"
 	}
     }
 }
