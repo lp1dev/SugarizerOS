@@ -1,0 +1,13 @@
+{
+    SugarizerOS:{
+	init:{
+	    description: "Initializes the SugarizerOS JavaScript API"
+	}
+	get_android_applications:{
+	    description: "Returns a JSON array containing for each application :
+a package-name (String), an icon (base64 String) and the application's flags (int)",
+	    parameters: "(Optional) a flag to filter the returned applications with",
+	    returns: "A JSON array"
+	}
+    }
+}
