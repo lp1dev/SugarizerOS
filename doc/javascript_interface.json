@@ -4,16 +4,30 @@
 	    description: "Initializes the SugarizerOS JavaScript API"
 	},
 	getAndroidApplications:{
-	    description: "Returns a JSON array containing for each application :
-a package-name (String) and the application's flags (int)",
+	    description: "Sends to the onSuccess callback an array of Json objects containing : a base64 encoded icon(string), a name(string), a packageName(string) and some flags (int)",
 	    parameters: "(Optional) a flag to filter the returned applications with",
-	    returns: "A JSON array"
+	    returns: "Nothing"
 	},
 	initActivitiesPreferences:{
 	    description: "Adds the Android applications to the preferences.activities array",
 	    parameters: "None",
 	    returns: "Nothing"
 	},
+	runActivity:{
+	    description: "Start an android Activity from its package name",
+	    parameters: "A package name(string)",
+	    returns: "Nothing"
+	},
+	runSettings:{
+	    description: "Starts the Android settings activity",
+	    parameters: "None",
+	    returns: "Nothing"
+	},
+	applicationsToActivities:{
+	    description: "Turns an array of Android applications to the activities format used by sugar",
+	    parameters: "An array of applications as returned by getAndroidApplications",
+	    returns: "An array of sugar activities as the ones in parameters.activities" 
+	}
 	scanWifi:{
 	    description: "Scans the wifi networks around and sends the array of SSIDs to a callback",
 	    parameters: "A callback to be called after the scan is done",
