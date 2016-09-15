@@ -4,61 +4,48 @@ var pump = require('pump');
 var concat = require('gulp-concat');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
-var usemin = require('gulp-usemin');
+var revReplace = require('gulp-rev-replace');
 var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-minify-html');
 var minifyCss = require('gulp-minify-css');
 var rev = require('gulp-rev');
 
-var useminTask = function() {
-    return gulp.src('./sugar-cordova/www/*.html')
-        .pipe(usemin({
-	    css: [ function(){}],
-	    html: [ function(){} ],
-	    js: [ compressJS() ],
-	    inlinejs: [ function(){} ],
-	    inlinecss: [ function(){} ]
-	}))
-        .pipe(gulp.dest('./tmp/'));
+var buildDir = "./build"
+var jsFilter = "js/*.js"
+var cssFilter = "css/*.css"
+
+var buildAll = function(){
+    return gulp.src("./sugar-cordova/www/index.html")
 }
 
-var compressJS = function (cb) {
-    pump([
-	gulp.src('sugar-cordova/www/js/*.js'),
-	uglify(),
-	gulp.dest('./tmp')
-    ],
-	 cb
-	);
+var minifyHtmlTask = function(){
+    return gulp.src("./sugar-cordova/www/*.html")
+	.pipe(minifyHtml({ empty: false }))
+	.pipe(gulp.dest(buildDir));
 }
 
-var concatJS = function() {
-    return gulp.src('./tmp/*.js')
-        .pipe(concat('sugarizer.js'))
-        .pipe(gulp.dest('./js/'));
+var minifyCssTask = function(){
+    return gulp.src("./sugar-cordova/www/css/*.css")
+	.pipe(minifyCss())
+	.pipe(concat("sugarizer.min.css"))
+	.pipe(gulp.dest(buildDir+"/css"))
 }
 
-var cleanJS = function(){
-    return gulp.src('./tmp', {read: false})
-        .pipe(clean());
+var minifyJSTask = function (cb) {
+    return gulp.src("./sugar-cordova/www/js/*.js")
+	.pipe(concat("sugarizer.min.js"))
+    	.pipe(uglify())
+	.pipe(gulp.dest(buildDir+'/js/'))
 }
 
-var build = function () {
+var buildTask = function () {
     runSequence('build-js');
 }
 
-var buildJS = function() {
-    runSequence('compress-js',
-		'concat-js',
-		'clean-js');
-}
-
 //Global tasks
-gulp.task('build', build);
+gulp.task('build', buildTask);
 gulp.task('usemin', useminTask);
 
 //Js related tasks
-gulp.task('build-js', buildJS);
-gulp.task('clean-js', cleanJS);
-gulp.task('concat-js', concatJS);
-gulp.task('compress-js', compressJS);
+gulp.task('minify-js', minifyJSTask);
+gulp.task('minify-html', minifyHtmlTask);
