@@ -4,18 +4,21 @@ var pump = require('pump');
 var concat = require('gulp-concat');
 var clean = require('gulp-clean');
 var runSequence = require('run-sequence');
-var revReplace = require('gulp-rev-replace');
 var uglify = require('gulp-uglify');
 var minifyHtml = require('gulp-minify-html');
 var minifyCss = require('gulp-minify-css');
 var rev = require('gulp-rev');
 
 var buildDir = "./build"
-var jsFilter = "js/*.js"
-var cssFilter = "css/*.css"
+var jsFilter = "**/*.js"
+var cssFilter = "**/*.css"
 
 var buildAll = function(){
-    return gulp.src("./sugar-cordova/www/index.html")
+    return gulp.src("./sugar-cordova/www/*.html")
+	.pipe(minifyHtmlTask())
+	.pipe(minifyJSTask())
+	.pipe(minifyCssTask())
+	.pipe(rev())
 }
 
 var minifyHtmlTask = function(){
@@ -38,13 +41,8 @@ var minifyJSTask = function (cb) {
 	.pipe(gulp.dest(buildDir+'/js/'))
 }
 
-var buildTask = function () {
-    runSequence('build-js');
-}
-
 //Global tasks
-gulp.task('build', buildTask);
-gulp.task('usemin', useminTask);
+gulp.task('build', buildAll);
 
 //Js related tasks
 gulp.task('minify-js', minifyJSTask);
